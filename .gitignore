@@ -41,5 +41,6 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-.idea
+.idea/worskpace.xml
+.idea/tasks.xml
 WebDriver.iml
