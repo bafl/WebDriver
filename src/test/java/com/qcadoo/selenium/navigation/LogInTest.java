@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 
 public class LogInTest {
-    public static void main(String[] args){
+    public static void main (String[] args){
         WebDriver driver = new FirefoxDriver();
         driver.get("http://daily-build.qcadoo.org/login.html?timeout=true");
 
