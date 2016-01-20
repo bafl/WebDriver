@@ -10,14 +10,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.qcadoo.selenium.navigation.Url.getURL;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import static com.qcadoo.selenium.navigation.Url.getURL_LOGOUT;
 
 public class AddProductTest {
     private WebDriver driver;
@@ -32,7 +32,8 @@ public class AddProductTest {
 
     @Test
     public void test111AddProduct() throws Exception {
-        driver.get(getURL_LOGOUT());
+        driver.navigate().to(getURL());
+       // logInTest(driver);
         driver.findElement(By.cssSelector("i")).click();
         for (int second = 0; ; second++) {
             if (second >= 60) fail("timeout");
@@ -44,7 +45,10 @@ public class AddProductTest {
             Thread.sleep(1000);
         }
 
-        // ERROR: Caught exception [ERROR: Unsupported command [mouseOver | id=firstLevelButton_basic | ]]
+        Actions builder = new Actions(driver);
+        builder.moveToElement(driver.findElement(By.id("firstLevelButton_basic")));
+        builder.build().perform();
+
         driver.findElement(By.linkText("Produkty")).click();
         for (int second = 0; ; second++) {
             if (second >= 60) fail("timeout");
