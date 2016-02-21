@@ -5,47 +5,52 @@
 
 package com.qcadoo.selenium.navigation;
 
+import com.qcadoo.selenium.DriverFactory;
+import org.junit.Before;
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 
-public class LogInTest {
+public class LogInTest extends DriverFactory {
 
-public static void logInTest(WebDriver driver) {
-        WebElement loginBox = driver.findElement(By.id("usernameInput"));
-        WebElement passwordBox = driver.findElement(By.id("passwordInput"));
-        WebElement loginButton = driver.findElement(By.cssSelector("#loginButton > span:nth-child(1)"));
-        WebElement rememberMeChBox = driver.findElement(By.id("rememberMeCheckbox"));
+    private static final String URL = "http://daily-build.qcadoo.org/login.html?timeout=true";
+    private WebDriver driver;
+    private WebDriverWait wait;
 
+    @Before
+    public void setUp() throws Exception {
+        driver = DriverFactory.getDriver();
+        wait = new WebDriverWait(driver,10);
+    }
 
-        loginBox.sendKeys("superadmin");
-        passwordBox.sendKeys("superadmin");
-        rememberMeChBox.click();
+    @Test
+    public void logInTest(){
+        driver.navigate().to(URL);
+
+        WebElement usernameInput, passwordInput, loginButton, rememberMeChBox;
+        usernameInput = driver.findElement(By.id("usernameInput"));
+        passwordInput = driver.findElement(By.id("passwordInput"));
+        loginButton = driver.findElement(By.cssSelector("a#loginButton"));
+        rememberMeChBox = driver.findElement(By.id("rememberMeCheckbox"));
+
         assertEquals("QCD MES :: login", driver.getTitle());
 
-        System.out.println(loginButton.getTagName());
-
-        System.out.println(loginBox.getCssValue("height"));
-        System.out.println(loginBox.getLocation());
-        System.out.println(passwordBox.getSize());
-        assertEquals(loginBox.getSize(), passwordBox.getSize());
-        System.out.println(loginButton.getText());
-        assertTrue(loginButton.isDisplayed());
-        System.out.println(loginButton.isDisplayed());
-        System.out.println(rememberMeChBox.isSelected());
-        assertEquals(true, rememberMeChBox.isEnabled());
-        print(rememberMeChBox.isEnabled());
-        print(rememberMeChBox.isSelected());
-
+        usernameInput.clear();
+        passwordInput.clear();
+        usernameInput.sendKeys("superadmin");
+        passwordInput.sendKeys("superadmin");
+        if (!rememberMeChBox.isSelected()) {
+            rememberMeChBox.click();
+        }
         loginButton.click();
-    }
 
-    public static void print(Object asd){
-        System.out.println(asd);
+        wait.until(titleIs("QCD MES - G³ówna"));
     }
-
 }
+
