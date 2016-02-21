@@ -33,7 +33,6 @@ public class AddProductTest {
     @Test
     public void test111AddProduct() throws Exception {
         driver.navigate().to(getURL());
-       // logInTest(driver);
         driver.findElement(By.cssSelector("i")).click();
         for (int second = 0; ; second++) {
             if (second >= 60) fail("timeout");

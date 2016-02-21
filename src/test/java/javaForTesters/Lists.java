@@ -1,6 +1,6 @@
 package javaForTesters;
 
-import com.qcadoo.selenium.navigation.LogInTest;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,25 +15,25 @@ public class Lists {
 
     @Test
     public void listTest() {
-        List<String> days = new ArrayList<String>();
+        List<String> days = new ArrayList<>();
         days.add(0, "Pon");
-        LogInTest.print(days);
+        print(days);
         days.add("Wt");
-        LogInTest.print(days);
+        print(days);
         Assert.assertEquals("Wt", days.get(1));
         days.add("Śr");
         days.add(0, "Do usunięcia");
-        LogInTest.print(days);
+        print(days);
         days.remove(0);
-        LogInTest.print(days);
+        print(days);
 
         Assert.assertEquals(1, days.indexOf("Wt"));
 
         days.set(1, "new");
         Assert.assertEquals("new", days.get(1));
-        LogInTest.print(days);
+        print(days);
         days.remove("new");
-        LogInTest.print(days);
+        print(days);
 
 
     }
@@ -50,4 +50,7 @@ public class Lists {
 
     }
 
+    public void print(Object input) {
+        System.out.println(input.toString());
+    }
 }
