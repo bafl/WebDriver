@@ -5,34 +5,34 @@ package com.qcadoo.selenium.basicTests;
  * Created by Bartek on 28.09.2015.
  */
 
-import org.junit.After;
+import com.qcadoo.selenium.DriverFactory;
+import com.qcadoo.selenium.navigation.LogInTest;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.qcadoo.selenium.navigation.Url.getURL;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class AddProductTest {
+public class AddProductTest extends DriverFactory {
     private WebDriver driver;
-    private boolean acceptNextAlert = true;
-    private StringBuffer verificationErrors = new StringBuffer();
 
     @Before
     public void setUp() throws Exception {
-        driver = new FirefoxDriver();
+        driver = getDriver();
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
     @Test
     public void test111AddProduct() throws Exception {
-        driver.navigate().to(getURL());
+        LogInTest logIn = new LogInTest();
+        logIn.logInTest(driver);
         driver.findElement(By.cssSelector("i")).click();
         for (int second = 0; ; second++) {
             if (second >= 60) fail("timeout");
@@ -128,14 +128,6 @@ public class AddProductTest {
         assertTrue(isElementPresent(By.xpath("//span[.='Nowy produkt wyjściowy']")));
     }
 
-    @After
-    public void tearDown() throws Exception {
-        driver.quit();
-        String verificationErrorString = verificationErrors.toString();
-        if (!"".equals(verificationErrorString)) {
-            fail(verificationErrorString);
-        }
-    }
 
     private boolean isElementPresent(By by) {
         try {
@@ -146,28 +138,5 @@ public class AddProductTest {
         }
     }
 
-    private boolean isAlertPresent() {
-        try {
-            driver.switchTo().alert();
-            return true;
-        } catch (NoAlertPresentException e) {
-            return false;
-        }
-    }
-
-    private String closeAlertAndGetItsText() {
-        try {
-            Alert alert = driver.switchTo().alert();
-            String alertText = alert.getText();
-            if (acceptNextAlert) {
-                alert.accept();
-            } else {
-                alert.dismiss();
-            }
-            return alertText;
-        } finally {
-            acceptNextAlert = true;
-        }
-    }
 }
 
