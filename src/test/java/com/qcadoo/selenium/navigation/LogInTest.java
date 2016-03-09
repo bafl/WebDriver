@@ -30,7 +30,9 @@ public class LogInTest extends DriverFactory {
     }
 
     @Test
-    public void logInTest(){
+    public void logInTest() throws Exception {
+        driver = DriverFactory.getDriver();
+        wait = new WebDriverWait(driver,10);
         driver.navigate().to(URL);
 
         WebElement usernameInput, passwordInput, loginButton, rememberMeChBox;
@@ -43,8 +45,8 @@ public class LogInTest extends DriverFactory {
 
         usernameInput.clear();
         passwordInput.clear();
-        usernameInput.sendKeys("superadmin");
-        passwordInput.sendKeys("superadmin");
+        usernameInput.sendKeys("admin");
+        passwordInput.sendKeys("admin");
         if (!rememberMeChBox.isSelected()) {
             rememberMeChBox.click();
         }

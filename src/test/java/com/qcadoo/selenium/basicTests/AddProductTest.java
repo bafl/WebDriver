@@ -10,133 +10,116 @@ import com.qcadoo.selenium.navigation.LogInTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.openqa.selenium.By.*;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 public class AddProductTest extends DriverFactory {
     private WebDriver driver;
+    private WebDriverWait wait;
+
+    private final By menuArrow = new ByCssSelector("i");
+    private final By menuContent = new ByClassName("logoDropdownBoxContent");
+    private final By secondLevelMenuPositions = new ByCssSelector("ul.subMenu > li span");
+    private final By saveButton = new ByXPath("//div[@id='window_ribbonContentWrapper']/div[2]/div/div/div[2]/div");
+    private final By productNumberInputSelector = new ById("window.mainTab.product.gridLayout.number_input");
+    private final By productNameInputSelector = new ById("window.mainTab.product.gridLayout.name_input");
 
     @Before
     public void setUp() throws Exception {
         driver = getDriver();
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver,10);
     }
 
     @Test
-    public void test111AddProduct() throws Exception {
-        LogInTest logIn = new LogInTest();
-        logIn.logInTest(driver);
-        driver.findElement(By.cssSelector("i")).click();
-        for (int second = 0; ; second++) {
-            if (second >= 60) fail("timeout");
-            try {
-                if ("logoDropdownBox open".equals(driver.findElement(By.xpath("//div[@id='mainTopMenu']/div[2]")).getAttribute("class")))
-                    break;
-            } catch (Exception e) {
-            }
-            Thread.sleep(1000);
-        }
+    public void addProductsTest() throws Exception {
+        new LogInTest().logInTest();
+        driver.findElement(menuArrow).click();
+        wait.until(visibilityOfElementLocated(menuContent));
 
         Actions builder = new Actions(driver);
-        builder.moveToElement(driver.findElement(By.id("firstLevelButton_basic")));
-        builder.build().perform();
-
-        driver.findElement(By.linkText("Produkty")).click();
-        for (int second = 0; ; second++) {
-            if (second >= 60) fail("timeout");
-            try {
-                if ("ribbonBigElement enabled".equals(driver.findElement(By.xpath("//div[@id='window_ribbonContentWrapper']/div/div/div/div[2]/div")).getAttribute("class")))
-                    break;
-            } catch (Exception e) {
+        builder.moveToElement(driver.findElement(id("firstLevelButton_basic")));
+        builder.sendKeys(Keys.ARROW_RIGHT);
+        builder.perform();
+        List<WebElement> secondLevelMenuPositionsList = driver.findElements(secondLevelMenuPositions);
+        for (int i = 0; i < secondLevelMenuPositionsList.size(); i++){
+            String label = driver.findElement(cssSelector("a.maintainHover span")).getText();
+            if (!label.equals("Produkty")){
+                builder.sendKeys(Keys.ARROW_DOWN).perform();
+            } else {
+                builder.sendKeys(Keys.ENTER).perform();
+                break;
             }
-            Thread.sleep(1000);
         }
 
-        driver.findElement(By.xpath("//label[.='Dodajnowy']")).click();
-        for (int second = 0; ; second++) {
-            if (second >= 60) fail("timeout");
-            try {
-                if ("ribbonBigElement enabled".equals(driver.findElement(By.xpath("//div[@id='window_ribbonContentWrapper']/div/div/div/div[2]/div")).getAttribute("class")))
-                    break;
-            } catch (Exception e) {
-            }
-            Thread.sleep(1000);
-        }
+        wait.until(frameToBeAvailableAndSwitchToIt(0));
+        wait.until(visibilityOfElementLocated(xpath("//label[.='Dodajnowy']"))).click();
+        WebElement productNumberInput = wait.until(visibilityOfElementLocated(productNumberInputSelector));
+        wait.until(new ElementAttribute("class","ribbonBigElement enabled",saveButton));
 
-        driver.findElement(By.id("window.mainTab.product.gridLayout.number_input")).clear();
-        driver.findElement(By.id("window.mainTab.product.gridLayout.number_input")).sendKeys("Nowy produkt wyj≈õciowy");
-        driver.findElement(By.id("window.mainTab.product.gridLayout.name_input")).clear();
-        driver.findElement(By.id("window.mainTab.product.gridLayout.name_input")).sendKeys("Nowy produkt wyj≈õciowy");
-        new Select(driver.findElement(By.id("window.mainTab.product.gridLayout.globalTypeOfMaterial_input"))).selectByVisibleText("p√≥≈Çprodukt");
-        // ERROR: Caught exception [ERROR: Unsupported command [getEval |  | ]]
-        String ean = driver.findElement(By.id("window.mainTab.product.gridLayout.ean_input")).getAttribute("value");
-        new Select(driver.findElement(By.id("window.mainTab.product.gridLayout.category_input"))).selectByVisibleText("1");
-        driver.findElement(By.id("window.mainTab.product.gridLayout.description_input")).clear();
-        driver.findElement(By.id("window.mainTab.product.gridLayout.description_input")).sendKeys("Dodawanie nowego produktu wyj≈õciowego");
-        driver.findElement(By.xpath("//a[.='Zapisz i nowy']")).click();
-        for (int second = 0; ; second++) {
-            if (second >= 60) fail("timeout");
-            try {
-                if ("ribbonBigElement enabled".equals(driver.findElement(By.xpath("//div[@id='window_ribbonContentWrapper']/div/div/div/div[2]/div")).getAttribute("class")))
-                    break;
-            } catch (Exception e) {
-            }
-            Thread.sleep(1000);
-        }
+        productNumberInput.clear();
+        productNumberInput.sendKeys("Nowy produkt wyjúciowy");
+        WebElement productNameInput = driver.findElement(productNameInputSelector);
+        productNameInput.clear();
+        driver.findElement(id("window.mainTab.product.gridLayout.name_input")).sendKeys("Nowy produkt wyjúciowy");
+        new Select(driver.findElement(id("window.mainTab.product.gridLayout.globalTypeOfMaterial_input"))).selectByVisibleText("pÛ≥produkt");
+        driver.findElement(id("window.mainTab.product.gridLayout.description_input")).clear();
+        driver.findElement(id("window.mainTab.product.gridLayout.description_input")).sendKeys("Dodawanie nowego produktu wyjúciowego");
+        driver.findElement(xpath("//a[.='Zapisz i nowy']")).click();
+//        driver.findElement(By.id("window.mainTab.product.gridLayout.number_input")).clear();
+//        driver.findElement(By.id("window.mainTab.product.gridLayout.number_input")).sendKeys("Nowy produkt wejúciowy");
+//        driver.findElement(By.id("window.mainTab.product.gridLayout.name_input")).clear();
+//        driver.findElement(By.id("window.mainTab.product.gridLayout.name_input")).sendKeys("Nowy produkt wejúciowy");
+//        new Select(driver.findElement(By.id("window.mainTab.product.gridLayout.globalTypeOfMaterial_input"))).selectByVisibleText("pÛ≥produkt");
+//        String ean_pr_wej = driver.findElement(By.id("window.mainTab.product.gridLayout.ean_input")).getAttribute("value");
+//        new Select(driver.findElement(By.id("window.mainTab.product.gridLayout.category_input"))).selectByVisibleText("1");
+//        driver.findElement(By.id("window.mainTab.product.gridLayout.description_input")).clear();
+//        driver.findElement(By.id("window.mainTab.product.gridLayout.description_input")).sendKeys("Dodawanie nowego produktu wejúciowego");
+//        driver.findElement(By.xpath("//a[.='Zapisz i powrÛt']")).click();
+//        assertTrue(isElementPresent(By.xpath("//span[.='Nowy produkt wejúciowy']")));
+//        assertTrue(isElementPresent(By.xpath("//span[.='Nowy produkt wyjúciowy']")));
+//    }
 
-        driver.findElement(By.id("window.mainTab.product.gridLayout.number_input")).clear();
-        driver.findElement(By.id("window.mainTab.product.gridLayout.number_input")).sendKeys("Nowy produkt wej≈õciowy");
-        driver.findElement(By.id("window.mainTab.product.gridLayout.name_input")).clear();
-        driver.findElement(By.id("window.mainTab.product.gridLayout.name_input")).sendKeys("Nowy produkt wej≈õciowy");
-        new Select(driver.findElement(By.id("window.mainTab.product.gridLayout.globalTypeOfMaterial_input"))).selectByVisibleText("p√≥≈Çprodukt");
-        // ERROR: Caught exception [ERROR: Unsupported command [getEval |  | ]]
-        String ean_pr_wej = driver.findElement(By.id("window.mainTab.product.gridLayout.ean_input")).getAttribute("value");
-        new Select(driver.findElement(By.id("window.mainTab.product.gridLayout.category_input"))).selectByVisibleText("1");
-        driver.findElement(By.id("window.mainTab.product.gridLayout.description_input")).clear();
-        driver.findElement(By.id("window.mainTab.product.gridLayout.description_input")).sendKeys("Dodawanie nowego produktu wej≈õciowego");
-        driver.findElement(By.xpath("//a[.='Zapisz i powr√≥t']")).click();
-        for (int second = 0; ; second++) {
-            if (second >= 60) fail("timeout");
-            try {
-                if ("ribbonBigElement enabled".equals(driver.findElement(By.xpath("//div[@id='window_ribbonContentWrapper']/div/div/div/div[2]/div")).getAttribute("class")))
-                    break;
-            } catch (Exception e) {
-            }
-            Thread.sleep(1000);
-        }
-
-        // ERROR: Caught exception [Error: locator strategy either id or name must be specified explicitly.]
-        // ERROR: Caught exception [ERROR: Unsupported command [keyUp | gs_name | \13]]
-        for (int second = 0; ; second++) {
-            if (second >= 60) fail("timeout");
-            try {
-                if ("ribbonBigElement enabled".equals(driver.findElement(By.xpath("//div[@id='window_ribbonContentWrapper']/div/div/div/div[2]/div")).getAttribute("class")))
-                    break;
-            } catch (Exception e) {
-            }
-            Thread.sleep(1000);
-        }
-
-        assertTrue(isElementPresent(By.xpath("//span[.='Nowy produkt wej≈õciowy']")));
-        assertTrue(isElementPresent(By.xpath("//span[.='Nowy produkt wyj≈õciowy']")));
     }
 
+    private class ElementAttribute implements ExpectedCondition<WebElement> {
+        private WebElement element;
+        private final String attribute;
+        private final String attributeValue;
+        private final By locator;
 
-    private boolean isElementPresent(By by) {
-        try {
-            driver.findElement(by);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
+        private ElementAttribute(final String attribute,final String attributeValue, final By locator) {
+            this.attribute = attribute;
+            this.attributeValue = attributeValue;
+            this.locator = locator;
+        }
+
+        @Override
+        public WebElement apply (WebDriver input){
+            try {
+                element = driver.findElement(locator);
+                if (attributeValue.equals(driver.findElement(locator).getAttribute(attribute))) {
+                    return element;
+                }
+                return null;
+            } catch (Exception e) {
+            }
+            return null;
+
         }
     }
+
 
 }
 
