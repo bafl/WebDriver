@@ -5,64 +5,45 @@ package com.qcadoo.selenium.basicTests;
  * Created by Bartek on 28.09.2015.
  */
 
-import com.qcadoo.selenium.DriverFactory;
-import com.qcadoo.selenium.navigation.LogInTest;
+import com.qcadoo.webdriver.drivermanager.DriverFactory;
+import com.qcadoo.webdriver.pageobject.MenuNavigation;
+import com.qcadoo.webdriver.pageobject.basic.ProductsDetailsPageObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.openqa.selenium.By.*;
-import static org.openqa.selenium.support.ui.ExpectedConditions.*;
+import static org.openqa.selenium.By.ById;
+import static org.openqa.selenium.By.ByXPath;
 
 public class AddProductTest extends DriverFactory {
     private WebDriver driver;
-    private WebDriverWait wait;
 
-    private final By menuArrow = new ByCssSelector("i");
-    private final By menuContent = new ByClassName("logoDropdownBoxContent");
-    private final By secondLevelMenuPositions = new ByCssSelector("ul.subMenu > li span");
     private final By saveButton = new ByXPath("//div[@id='window_ribbonContentWrapper']/div[2]/div/div/div[2]/div");
-    private final By productNumberInputSelector = new ById("window.mainTab.product.gridLayout.number_input");
+    private final By productNumberInputSelector = new ById("");
     private final By productNameInputSelector = new ById("window.mainTab.product.gridLayout.name_input");
 
     @Before
     public void setUp() throws Exception {
         driver = getDriver();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver,10);
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        ProductsDetailsPageObject productsDetailsPO = new ProductsDetailsPageObject(driver);
     }
 
     @Test
     public void addProductsTest() throws Exception {
-        new LogInTest().logInTest();
-        driver.findElement(menuArrow).click();
-        wait.until(visibilityOfElementLocated(menuContent));
+        MenuNavigation.goTo(driver, "Podstawowe", "Produkty");
+    }
+    @Test
+    public void addProductsTest2() throws Exception {
+        MenuNavigation.goTo(driver, "Technologie", "Technologie");
 
-        Actions builder = new Actions(driver);
-        builder.moveToElement(driver.findElement(id("firstLevelButton_basic")));
-        builder.sendKeys(Keys.ARROW_RIGHT);
-        builder.perform();
-        List<WebElement> secondLevelMenuPositionsList = driver.findElements(secondLevelMenuPositions);
-        for (int i = 0; i < secondLevelMenuPositionsList.size(); i++){
-            String label = driver.findElement(cssSelector("a.maintainHover span")).getText();
-            if (!label.equals("Produkty")){
-                builder.sendKeys(Keys.ARROW_DOWN).perform();
-            } else {
-                builder.sendKeys(Keys.ENTER).perform();
-                break;
-            }
-        }
 
+/*
         wait.until(frameToBeAvailableAndSwitchToIt(0));
         wait.until(visibilityOfElementLocated(xpath("//label[.='Dodajnowy']"))).click();
         WebElement productNumberInput = wait.until(visibilityOfElementLocated(productNumberInputSelector));
@@ -77,6 +58,7 @@ public class AddProductTest extends DriverFactory {
         driver.findElement(id("window.mainTab.product.gridLayout.description_input")).clear();
         driver.findElement(id("window.mainTab.product.gridLayout.description_input")).sendKeys("Dodawanie nowego produktu wyjœciowego");
         driver.findElement(xpath("//a[.='Zapisz i nowy']")).click();
+*/
 //        driver.findElement(By.id("window.mainTab.product.gridLayout.number_input")).clear();
 //        driver.findElement(By.id("window.mainTab.product.gridLayout.number_input")).sendKeys("Nowy produkt wejœciowy");
 //        driver.findElement(By.id("window.mainTab.product.gridLayout.name_input")).clear();
@@ -119,7 +101,6 @@ public class AddProductTest extends DriverFactory {
 
         }
     }
-
 
 }
 
