@@ -1,6 +1,6 @@
-package com.qcadoo.selenium;
+package com.qcadoo.webdriver.drivermanager;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 
@@ -23,8 +23,8 @@ public class DriverFactory {
         return driverThread.get().getDriver();
     }
 
-    @After
-    public void quitDriver() throws Exception {
+    @AfterClass
+    public static void quitDriver() throws Exception {
         driverThread.get().quitDriver();
     }
 }
