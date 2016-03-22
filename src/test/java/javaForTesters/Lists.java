@@ -34,20 +34,16 @@ public class Lists {
         print(days);
         days.remove("new");
         print(days);
-
-
     }
 
     @Test
-    public void listExercise(){
-        List<User> listOfUsers = new ArrayList<User>();
+    public void listExercise() {
+        List<User> listOfUsers = new ArrayList<>();
         User bafl = new User();
         User jost = new User();
 
         listOfUsers.add(bafl);
         listOfUsers.add(jost);
-
-
     }
 
     public void print(Object input) {
