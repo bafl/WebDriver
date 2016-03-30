@@ -6,35 +6,38 @@
 package com.qcadoo.selenium.login;
 
 import com.qcadoo.webdriver.drivermanager.DriverFactory;
-import com.qcadoo.webdriver.pageobject.LogInPageObject;
-import com.qcadoo.webdriver.pageobject.LogInPageObject.MesLanguage;
+import com.qcadoo.webdriver.pageobject.DashboardPO;
+import com.qcadoo.webdriver.pageobject.LogInPO;
+import com.qcadoo.webdriver.pageobject.LogInPO.MesLanguage;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-
-import static org.junit.Assert.assertEquals;
 
 
 public class LogInTest extends DriverFactory {
 
     private WebDriver driver;
-    private LogInPageObject logInPageObject;
+    private DashboardPO dashboardPO;
+
+    private String login = "admin";
+    private String password = "admin";
 
     @Before
     public void setUp() throws Exception {
         driver = DriverFactory.getDriver();
-        logInPageObject = new LogInPageObject(driver);
-        logInPageObject.get();
+        dashboardPO = new DashboardPO(driver);
     }
 
     @Test
     public void logInTest() throws Exception {
-        assertEquals("QCD MES :: login", driver.getTitle());
-        logInPageObject.selectLanguage(MesLanguage.PL);
-        logInPageObject.typeUsername("admin");
-        logInPageObject.typePassword("admin");
-        logInPageObject.checkRememberMe();
-        logInPageObject.submitLogInAndWaitForTitleToChange();
+        DashboardPO dashboardPO = new LogInPO(driver)
+                .get()
+                .verifyTitle()
+                .selectLanguage(MesLanguage.PL)
+                .typeUsername(login)
+                .typePassword(password)
+                .checkRememberMe().submitLogInAndWaitForDashboard()
+                .waitUntilLoginPresentOnDashboard(login);
     }
 }
 

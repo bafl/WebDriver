@@ -10,15 +10,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Objects;
 
+import static org.junit.Assert.assertEquals;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 /**
  * WebDriver
  * Created by Bartek on 22.03.2016.
  */
-public class LogInPageObject {
+public class LogInPO {
     private WebDriver driver;
     private WebDriverWait wait;
+
+    private String login = "admin";
+    private String password = "admin";
 
     private static final String URL = "http://daily-build.qcadoo.org/login.html?timeout=true";
 
@@ -38,10 +42,28 @@ public class LogInPageObject {
     private WebElement languageSelect;
 
 
-    public LogInPageObject(WebDriver driver) {
+    public LogInPO(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver,10);
         PageFactory.initElements(driver, this);
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public LogInPO verifyTitle() {
+
+        try {
+            assertEquals("QCD MES :: login", driver.getTitle());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return this;
     }
 
     public enum MesLanguage {
@@ -59,31 +81,31 @@ public class LogInPageObject {
 
     }
 
-    public LogInPageObject get() {
+    public LogInPO get() {
         driver.navigate().to(URL);
         return this;
     }
 
-    public LogInPageObject typeUsername(String username) {
+    public LogInPO typeUsername(String username) {
         usernameInput.clear();
         usernameInput.sendKeys(username);
         return this;
     }
 
-    public LogInPageObject typePassword(String password) {
+    public LogInPO typePassword(String password) {
         passwordInput.clear();
         passwordInput.sendKeys(password);
         return this;
     }
 
-    public LogInPageObject checkRememberMe() {
+    public LogInPO checkRememberMe() {
         if (!rememberMeCheckbox.isSelected()) {
             rememberMeCheckbox.click();
         }
         return this;
     }
 
-    public LogInPageObject selectLanguage(MesLanguage language) {
+    public LogInPO selectLanguage(MesLanguage language) {
         Select select = new Select(languageSelect);
         if (!Objects.equals(select.getFirstSelectedOption().getText(), language.getValue())) {
             select.selectByValue(language.getValue());
@@ -91,19 +113,19 @@ public class LogInPageObject {
         return this;
     }
 
-    public DashboardPageObject submitLogInAndWaitForTitleToChange() {
+    public DashboardPO submitLogInAndWaitForDashboard() {
         loginButton.click();
         wait.until(titleIs("QCD MES - G³ówna"));
-        return new DashboardPageObject(driver);
+        return new DashboardPO(driver);
     }
 
-    public DashboardPageObject logInAsAdmin(){
+    public DashboardPO logInAsAdmin(){
         get();
         typeUsername("admin");
         typePassword("admin");
         selectLanguage(MesLanguage.PL);
         checkRememberMe();
-        submitLogInAndWaitForTitleToChange();
-        return new DashboardPageObject(driver);
+        submitLogInAndWaitForDashboard();
+        return new DashboardPO(driver);
     }
 }
