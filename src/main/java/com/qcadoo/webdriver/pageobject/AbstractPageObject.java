@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -23,9 +22,9 @@ public abstract class AbstractPageObject {
     protected WebDriver driver;
     protected WebDriverWait wait;
 
-    private static final By menuArrow = new By.ByCssSelector("i");
-    private static final By menuContent = new By.ByClassName("logoDropdownBoxContent");
-    private static final By secondLevelMenuPositions = new By.ByCssSelector("ul.subMenu > li span");
+    private final By menuArrow = new By.ByCssSelector("i");
+    private final By menuContent = new By.ByClassName("logoDropdownBoxContent");
+    private final By secondLevelMenuPositions = new By.ByCssSelector("ul.subMenu > li span");
 
     public AbstractPageObject(WebDriver driver) {
         this.driver = driver;
@@ -62,33 +61,9 @@ public abstract class AbstractPageObject {
         element.sendKeys(text);
     }
 
-    protected class ElementAttribute implements ExpectedCondition<WebElement> {
-        private final String attribute;
-        private final String attributeValue;
-        private final WebElement element;
-
-        public ElementAttribute(final WebElement element) {
-            this("readonly", "readonly", element);
-        }
-
-        public ElementAttribute(final String attribute, final String attributeValue, final WebElement element) {
-            this.attribute = attribute;
-            this.attributeValue = attributeValue;
-            this.element = element;
-        }
-
-        @Override
-        public WebElement apply (WebDriver input){
-            try {
-                if (attributeValue.equals(element.getAttribute(attribute))) {
-                    return element;
-                }
-                return null;
-            } catch (Exception e) {
-            }
-            return null;
-
-        }
+    public void waitForSaveButtonEnabled(){
+        WebElement saveButtonDivToBeEnabled = driver.findElement(By.xpath("//label[./text()='Zapisz']/../../../../.."));
+        new WaitForElementAttribute("class","ribbonBigElement enabled",saveButtonDivToBeEnabled);
     }
 }
 

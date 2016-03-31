@@ -26,7 +26,7 @@ public class ProductsDetailsPO extends AbstractPageObject {
     }
 
     public ProductsDetailsPO typeProductNameAndNumber(String number, String name) {
-//        wait.until(new ElementAttribute(saveProductButton));
+        waitForSaveButtonEnabled();
         clearAndType(productNumberInput,number);
         clearAndType(productNameInput,name);
         return this;
