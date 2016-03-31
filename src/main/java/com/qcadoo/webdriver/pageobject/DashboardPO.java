@@ -4,8 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentInElement;
 
 /**
  * WebDriver
@@ -26,7 +27,7 @@ public class DashboardPO {
 
     public DashboardPO waitUntilLoginPresentOnDashboard(String login) {
         driver.switchTo().frame(0);
-        wait.until(ExpectedConditions.textToBePresentInElement(languageSelect,"Witaj " + login));
+        wait.until(textToBePresentInElement(languageSelect,"Witaj " + login));
         return this;
     }
 }
