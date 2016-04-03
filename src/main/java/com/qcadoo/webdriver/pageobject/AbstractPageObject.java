@@ -36,6 +36,7 @@ public abstract class AbstractPageObject {
         if (driver.getTitle().contains("login") || !driver.getCurrentUrl().contains("daily-build.qcadoo.org")) {
             new LogInPO(driver).logInAsAdmin();
         }
+        driver.switchTo().parentFrame();
         driver.findElement(menuArrow).click();
         wait.until(visibilityOfElementLocated(menuContent));
 
