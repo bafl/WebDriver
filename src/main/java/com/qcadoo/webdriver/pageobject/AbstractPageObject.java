@@ -1,11 +1,9 @@
 package com.qcadoo.webdriver.pageobject;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -66,5 +64,9 @@ public abstract class AbstractPageObject {
         WebElement saveButtonDivToBeEnabled = driver.findElement(By.xpath("//label[./text()='Zapisz']/../../../../.."));
         new WaitForElementAttribute("class","ribbonBigElement enabled",saveButtonDivToBeEnabled);
     }
-}
 
+    public void waitForLoad() {
+        new WebDriverWait(driver, 5).until((ExpectedCondition<Boolean>) wd ->
+                ((JavascriptExecutor) wd).executeScript("return document.readyState == 'complete' && jQuery.active == 0").equals(true));
+    }
+}
