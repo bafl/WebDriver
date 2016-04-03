@@ -13,8 +13,7 @@ public class DriverFactory {
         driverThread = new ThreadLocal<WebDriverThread>() {
             @Override
             protected WebDriverThread initialValue() {
-                WebDriverThread webDriverThread = new WebDriverThread();
-                return webDriverThread;
+                return new WebDriverThread();
             }
         };
     }
