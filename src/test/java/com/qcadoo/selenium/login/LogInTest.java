@@ -17,25 +17,21 @@ import org.openqa.selenium.WebDriver;
 public class LogInTest extends DriverFactory {
 
     private WebDriver driver;
-    private DashboardPO dashboardPO;
-
-    private String login = "admin";
-    private String password = "admin";
 
     @Before
     public void setUp() throws Exception {
         driver = DriverFactory.getDriver();
-        dashboardPO = new DashboardPO(driver);
     }
 
     @Test
-    public void logInTest() throws Exception {
+    public void logInTest() {
+        String login = "admin";
         DashboardPO dashboardPO = new LogInPO(driver)
                 .get()
                 .verifyTitle()
                 .selectLanguage(MesLanguage.PL)
                 .typeUsername(login)
-                .typePassword(password)
+                .typePassword("admin")
                 .checkRememberMe().submitLogInAndWaitForDashboard()
                 .waitUntilLoginPresentOnDashboard(login);
     }

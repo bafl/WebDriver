@@ -21,7 +21,6 @@ public class LogInPO {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    private String login = "admin";
     private String password = "admin";
 
     private static final String URL = "http://daily-build.qcadoo.org/login.html?timeout=true";
@@ -46,14 +45,6 @@ public class LogInPO {
         this.driver = driver;
         this.wait = new WebDriverWait(driver,10);
         PageFactory.initElements(driver, this);
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public LogInPO verifyTitle() {
