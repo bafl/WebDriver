@@ -28,23 +28,22 @@ public class AddProductTest extends DriverFactory {
 
         ProductsDetailsPO productsDetailsPO = productsListPO.addNewProduct();
         productsDetailsPO.typeProductNameAndNumber("ASD", "ASD")
-                .selectGlobalTypeOfMaterial(INTERMEDIATE);
+                .selectGlobalTypeOfMaterial(INTERMEDIATE)
+                .typeProductDescription("Produkt ASD")
+                .selectProductUnit("szt");
     }
-//        new Select(driver.findElement(id("window.mainTab.product.gridLayout.globalTypeOfMaterial_input"))).selectByVisibleText("pÛ≥produkt");
-//        driver.findElement(id("window.mainTab.product.gridLayout.description_input")).clear();
-//        driver.findElement(id("window.mainTab.product.gridLayout.description_input")).sendKeys("Dodawanie nowego produktu wyjúciowego");
 //        driver.findElement(xpath("//a[.='Zapisz i nowy']")).click();
 //
 //        driver.findElement(By.id("window.mainTab.product.gridLayout.number_input")).clear();
-//        driver.findElement(By.id("window.mainTab.product.gridLayout.number_input")).sendKeys("Nowy produkt wejúciowy");
+//        driver.findElement(By.id("window.mainTab.product.gridLayout.number_input")).sendKeys("Nowy produkt wej≈õciowy");
 //        driver.findElement(By.id("window.mainTab.product.gridLayout.name_input")).clear();
-//        driver.findElement(By.id("window.mainTab.product.gridLayout.name_input")).sendKeys("Nowy produkt wejúciowy");
-//        new Select(driver.findElement(By.id("window.mainTab.product.gridLayout.globalTypeOfMaterial_input"))).selectByVisibleText("pÛ≥produkt");
+//        driver.findElement(By.id("window.mainTab.product.gridLayout.name_input")).sendKeys("Nowy produkt wej≈õciowy");
+//        new Select(driver.findElement(By.id("window.mainTab.product.gridLayout.globalTypeOfMaterial_input"))).selectByVisibleText("p√≥≈Çprodukt");
 //        String ean_pr_wej = driver.findElement(By.id("window.mainTab.product.gridLayout.ean_input")).getAttribute("value");
 //        new Select(driver.findElement(By.id("window.mainTab.product.gridLayout.category_input"))).selectByVisibleText("1");
 //        driver.findElement(By.id("window.mainTab.product.gridLayout.description_input")).clear();
-//        driver.findElement(By.id("window.mainTab.product.gridLayout.description_input")).sendKeys("Dodawanie nowego produktu wejúciowego");
-//        driver.findElement(By.xpath("//a[.='Zapisz i powrÛt']")).click();
-//        assertTrue(isElementPresent(By.xpath("//span[.='Nowy produkt wejúciowy']")));
-//        assertTrue(isElementPresent(By.xpath("//span[.='Nowy produkt wyjúciowy']")));
+//        driver.findElement(By.id("window.mainTab.product.gridLayout.description_input")).sendKeys("Dodawanie nowego produktu wej≈õciowego");
+//        driver.findElement(By.xpath("//a[.='Zapisz i powr√≥t']")).click();
+//        assertTrue(isElementPresent(By.xpath("//span[.='Nowy produkt wej≈õciowy']")));
+//        assertTrue(isElementPresent(By.xpath("//span[.='Nowy produkt wyj≈õciowy']")));
     }
