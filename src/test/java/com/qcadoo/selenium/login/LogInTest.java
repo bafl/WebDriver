@@ -32,7 +32,8 @@ public class LogInTest extends DriverFactory {
                 .selectLanguage(MesLanguage.PL)
                 .typeUsername(login)
                 .typePassword("admin")
-                .checkRememberMe().submitLogInAndWaitForDashboard()
+                .checkRememberMe()
+                .submitLogInAndWaitForDashboard()
                 .waitUntilLoginPresentOnDashboard(login);
     }
 }
