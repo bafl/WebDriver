@@ -23,7 +23,7 @@ public class LogInPO {
 
     private String password = "admin";
 
-    private static final String URL = "http://daily-build.qcadoo.org/login.html?timeout=true";
+    private static final String URL = "http://daily-build.qcadoo.org/login.html?lang=pl";
 
     @FindBy(how = How.ID, id = "usernameInput")
     private WebElement usernameInput;
@@ -106,7 +106,7 @@ public class LogInPO {
 
     public DashboardPO submitLogInAndWaitForDashboard() {
         loginButton.click();
-        wait.until(titleIs("QCD MES - G³ówna"));
+        wait.until(titleIs("QCD MES - GÅ‚Ã³wna"));
         return new DashboardPO(driver);
     }
 
