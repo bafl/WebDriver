@@ -112,9 +112,9 @@ public class LogInPO {
 
     public DashboardPO logInAsAdmin(){
         get();
+        selectLanguage(MesLanguage.PL);
         typeUsername("admin");
         typePassword("admin");
-        selectLanguage(MesLanguage.PL);
         checkRememberMe();
         submitLogInAndWaitForDashboard();
         return new DashboardPO(driver);
