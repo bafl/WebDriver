@@ -8,6 +8,8 @@ import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.List;
+
 /**
  * WebDriver
  * Created by Bartek on 22.03.2016.
@@ -15,14 +17,15 @@ import org.openqa.selenium.support.ui.Select;
 public class ProductsDetailsPO extends AbstractPageObject {
 
     @CacheLookup
+    @FindBy(xpath = "//label[./text()='Zapisz']")
+    private WebElement saveProductButton;
+
+    @CacheLookup
     @FindBy(id = "window.mainTab.product.gridLayout.number_input")
     private WebElement productNumberInput;
 
     @FindBy(id = "window.mainTab.product.gridLayout.name_input")
     private WebElement productNameInput;
-
-    @FindBy(xpath = "//span[contains(.,'Zapisz')]")
-    private WebElement saveProductButton;
 
     @FindBy(id = "window.mainTab.product.gridLayout.globalTypeOfMaterial_input")
     private WebElement globalTypeOfMaterialSelect;
@@ -32,6 +35,11 @@ public class ProductsDetailsPO extends AbstractPageObject {
 
     @FindBy(id = "window.mainTab.product.gridLayout.unit_input")
     private WebElement productUnitSelect;
+
+    @FindBy(id = "window.mainTab.product.gridLayout.additionalUnit_input")
+    private WebElement additionalUnitSelect;
+
+    private List<WebElement> availableProductUnits;
 
 
     public ProductsDetailsPO(WebDriver driver) {
@@ -57,15 +65,30 @@ public class ProductsDetailsPO extends AbstractPageObject {
     }
 
     public ProductsDetailsPO selectProductUnit(String unit) {
-        Select productUnitSelect = new Select(this.productUnitSelect);
-        if (!productUnitSelect.getFirstSelectedOption().getText().equals(unit)) {
+        selectUnitHelper(unit,productUnitSelect);
+        return this;
+    }
+
+    public ProductsDetailsPO saveProduct() {
+        saveProductButton.click();
+        waitForLoad();
+    return this;
+    }
+
+    public ProductsDetailsPO selectAdditionalUnit(String additionalUnit) {
+        selectUnitHelper(additionalUnit, additionalUnitSelect);
+    return this;
+    }
+
+    private void selectUnitHelper(String unit, WebElement select) {
+        Select unitSelect = new Select(select);
+        if (!unitSelect.getFirstSelectedOption().getText().equals(unit)) {
             try {
-                productUnitSelect.selectByVisibleText(unit);
+                unitSelect.selectByVisibleText(unit);
             } catch (NoSuchElementException e) {
                 e.printStackTrace();
             }
         }
-        return this;
     }
 
     public enum GlobalTypeOfMaterial {

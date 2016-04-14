@@ -30,7 +30,10 @@ public class AddProductTest extends DriverFactory {
         productsDetailsPO.typeProductNameAndNumber("ASD", "ASD")
                 .selectGlobalTypeOfMaterial(INTERMEDIATE)
                 .typeProductDescription("Produkt ASD")
-                .selectProductUnit("szt");
+                .selectProductUnit("szt")
+                .saveProduct()
+                .selectAdditionalUnit("para");
+
     }
 //        driver.findElement(xpath("//a[.='Zapisz i nowy']")).click();
 //
