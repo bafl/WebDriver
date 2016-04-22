@@ -20,9 +20,9 @@ public abstract class AbstractPageObject {
     protected WebDriver driver;
     protected WebDriverWait wait;
 
-    private final By menuArrow = new By.ByCssSelector("i");
-    private final By menuContent = new By.ByClassName("logoDropdownBoxContent");
-    private final By secondLevelMenuPositions = new By.ByCssSelector("ul.subMenu > li span");
+    private final By MENU_ARROW = new By.ByCssSelector("i");
+    private final By MENU_CONTENT = new By.ByClassName("logoDropdownBoxContent");
+    private final By SECOND_LEVEL_MENU_POSITIONS = new By.ByCssSelector("ul.subMenu > li span");
 
     public AbstractPageObject(WebDriver driver) {
         this.driver = driver;
@@ -35,14 +35,14 @@ public abstract class AbstractPageObject {
             new LogInPO(driver).logInAsAdmin();
         }
         driver.switchTo().parentFrame();
-        driver.findElement(menuArrow).click();
-        wait.until(visibilityOfElementLocated(menuContent));
+        driver.findElement(MENU_ARROW).click();
+        wait.until(visibilityOfElementLocated(MENU_CONTENT));
 
         Actions builder = new Actions(driver);
         builder.moveToElement(driver.findElement(linkText(firstLevel)))
                 .sendKeys(Keys.ARROW_RIGHT)
                 .perform();
-        List<WebElement> secondLevelMenuPositionsList = driver.findElements(secondLevelMenuPositions);
+        List<WebElement> secondLevelMenuPositionsList = driver.findElements(SECOND_LEVEL_MENU_POSITIONS);
         for (int i = 0; i < secondLevelMenuPositionsList.size(); i++) {
             String label = driver.findElement(cssSelector("a.maintainHover span")).getText();
             if (!label.equals(secondLevel)) {
