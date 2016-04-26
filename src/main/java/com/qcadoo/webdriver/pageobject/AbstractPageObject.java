@@ -60,6 +60,11 @@ public abstract class AbstractPageObject {
         element.sendKeys(text);
     }
 
+    public void switchToFrame(int frameIndex){
+        driver.switchTo().defaultContent();
+        driver.switchTo().frame(frameIndex);
+    }
+
     public void waitForSaveButtonEnabled(){
         WebElement saveButtonDivToBeEnabled = driver.findElement(By.xpath("//label[./text()='Zapisz']/../../../../.."));
         new WaitForElementAttribute("class","ribbonBigElement enabled",saveButtonDivToBeEnabled);
