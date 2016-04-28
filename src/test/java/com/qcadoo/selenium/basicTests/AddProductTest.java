@@ -31,9 +31,8 @@ public class AddProductTest extends DriverFactory {
                 .selectGlobalTypeOfMaterial(INTERMEDIATE)
                 .typeProductDescription("Produkt ASD")
                 .selectProductUnit("szt")
-                .saveProduct()
+                .saveEntity()
                 .selectAdditionalUnit("para");
-
     }
 //        driver.findElement(xpath("//a[.='Zapisz i nowy']")).click();
 //

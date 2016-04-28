@@ -10,7 +10,7 @@ import org.openqa.selenium.support.FindBy;
  * WebDriver
  * Created by Bartek on 26.04.2016.
  */
-public class SubassemblyDetailsPO extends AbstractPageObject{
+public class SubassemblyDetailsPO extends AbstractPageObject<SubassemblyDetailsPO>{
 
     @CacheLookup
     @FindBy(id = "window.mainTab.subassembly.gridLayout.number_input")

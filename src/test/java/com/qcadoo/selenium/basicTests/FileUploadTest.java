@@ -27,6 +27,7 @@ public class FileUploadTest extends DriverFactory {
 
         SubassemblyDetailsPO subassemblyDetailsPO = subassemblyListPO.addNewSubassembly()
                 .typeSubassemblyNameAndNumber("ASD", "ASD")
-                .selectWorkstationType();
+                .selectWorkstationType()
+                .saveEntity();
     }
 }

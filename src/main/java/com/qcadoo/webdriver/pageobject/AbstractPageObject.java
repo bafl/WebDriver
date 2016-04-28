@@ -1,7 +1,10 @@
 package com.qcadoo.webdriver.pageobject;
 
+import com.qcadoo.webdriver.pageobject.basic.products.ProductsDetailsPO;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -16,9 +19,12 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElem
  * WebDriver
  * Created by Bartek on 30.03.2016.
  */
-public abstract class AbstractPageObject {
+public abstract class AbstractPageObject<T extends AbstractPageObject<T>> {
     protected WebDriver driver;
     protected WebDriverWait wait;
+
+    @FindBy(xpath = "//label[./text()='Zapisz']")
+    private WebElement saveProductButton;
 
     private final By MENU_ARROW = new By.ByCssSelector("i");
     private final By MENU_CONTENT = new By.ByClassName("logoDropdownBoxContent");
@@ -74,4 +80,13 @@ public abstract class AbstractPageObject {
         new WebDriverWait(driver, 5).until((ExpectedCondition<Boolean>) wd ->
                 ((JavascriptExecutor) wd).executeScript("return document.readyState == 'complete' && jQuery.active == 0").equals(true));
     }
+
+    @SuppressWarnings("unchecked")
+    public T saveEntity() {
+        saveProductButton.click();
+        waitForLoad();
+        return (T) this;
+    }
+
+
 }

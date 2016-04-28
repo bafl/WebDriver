@@ -14,11 +14,9 @@ import java.util.List;
  * WebDriver
  * Created by Bartek on 22.03.2016.
  */
-public class ProductsDetailsPO extends AbstractPageObject {
+public class ProductsDetailsPO extends AbstractPageObject<ProductsDetailsPO> {
 
-    @CacheLookup
-    @FindBy(xpath = "//label[./text()='Zapisz']")
-    private WebElement saveProductButton;
+
 
     @CacheLookup
     @FindBy(id = "window.mainTab.product.gridLayout.number_input")
@@ -67,12 +65,6 @@ public class ProductsDetailsPO extends AbstractPageObject {
     public ProductsDetailsPO selectProductUnit(String unit) {
         selectUnitHelper(unit,productUnitSelect);
         return this;
-    }
-
-    public ProductsDetailsPO saveProduct() {
-        saveProductButton.click();
-        waitForLoad();
-    return this;
     }
 
     public ProductsDetailsPO selectAdditionalUnit(String additionalUnit) {
